@@ -37,8 +37,8 @@ def home():
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/<start><br/>"
-        f"/api/v1.0/<start>/<end>"  
+        f"/api/v1.0/&ltstart&gt<br/>"
+        f"/api/v1.0/&ltstart&gt/&ltend&gt"  
     )
 
 # 4. Define what to do when a user hits the /precipitation route
@@ -75,13 +75,13 @@ def tobs():
     last_date = '2017-08-23'
     one_year_before_date = '2016-08-23'
     most_active_station = 'USC00519281'
-    temperature = session.query(Measurement.date,Measurement.tobs).filter_by(station = most_active_station).\
+    temperature = session.query(Measurement.tobs).filter_by(station = most_active_station).\
     filter(Measurement.date >= one_year_before_date).filter(Measurement.date <= last_date).all()
     session.close()
     temperature_list = list(np.ravel(temperature))
   
     return jsonify(temperature_list)
-
+       
 @app.route("/api/v1.0/<start>")
 @app.route("/api/v1.0/<start>/<end>")
 def cal_temp(start=None,end=None):
